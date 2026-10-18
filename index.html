@@ -1,0 +1,438 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0B1026">
+    <title>menoozzzz attendance prediction</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page-shell">
+        <header class="site-header">
+            <a class="brand" href="#top" aria-label="menoozzzz attendance prediction home">
+                <span class="brand-mark" aria-hidden="true">m</span>
+                <span class="brand-name">menoozzzz attendance prediction</span>
+            </a>
+            <nav class="top-nav" aria-label="Main navigation">
+                <a href="#calculator">Calculator</a>
+                <a href="#overview">Overview</a>
+                <a href="#subjects">Subjects</a>
+                <a href="#calendar">Calendar</a>
+                <a href="#reports">Reports</a>
+                <a href="#planner">Planner</a>
+                <a href="#quest">Quest</a>
+            </nav>
+            <div class="header-tools">
+                <div class="header-status"><span class="status-dot" aria-hidden="true"></span>Attendance tracker</div>
+                <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to light mode" aria-pressed="false">
+                    <span id="theme-icon" aria-hidden="true">&#9788;</span>
+                    <span id="theme-label">Light mode</span>
+                </button>
+            </div>
+        </header>
+
+        <main id="top" class="dashboard">
+            <section id="calculator" class="calculator-hero" aria-labelledby="page-title">
+                <div class="intro">
+                    <p class="eyebrow"><span></span> YOUR ATTENDANCE, INSTANTLY</p>
+                    <h1 id="page-title">Calculate Your <span>Attendance</span></h1>
+                    <p class="intro-copy">Enter your class totals for your 75% status, safe misses, and classes needed.</p>
+                </div>
+
+                <div class="workspace">
+                    <section class="calculator-panel" aria-labelledby="calculator-title">
+                        <div class="section-heading">
+                            <div>
+                                <p class="section-kicker">YOUR NUMBERS</p>
+                                <h2 id="calculator-title">Attendance calculator</h2>
+                            </div>
+                            <span class="target-chip"><span class="target-chip-dot"></span> 75% requirement</span>
+                        </div>
+
+                        <form id="attendance-form">
+                            <div class="field-group">
+                                <label for="conducted">Total classes conducted</label>
+                                <div class="input-wrap">
+                                    <input type="number" id="conducted" name="conducted" min="1" step="1" inputmode="numeric" placeholder="e.g. 60" required>
+                                    <span class="input-suffix">classes</span>
+                                </div>
+                            </div>
+
+                            <div class="field-group">
+                                <label for="attended">Total classes attended</label>
+                                <div class="input-wrap">
+                                    <input type="number" id="attended" name="attended" min="0" step="1" inputmode="numeric" placeholder="e.g. 48" required>
+                                    <span class="input-suffix">classes</span>
+                                </div>
+                            </div>
+
+                            <p id="form-error" class="form-error" role="alert"></p>
+                            <button class="calculate-button" type="submit">
+                                <span>Calculate attendance</span>
+                                <span class="button-arrow" aria-hidden="true">&#8599;</span>
+                            </button>
+                        </form>
+                        <p class="privacy-note"><span aria-hidden="true">&#9679;</span> Your numbers stay in this browser</p>
+                    </section>
+
+                    <section id="results" class="results-panel" aria-labelledby="results-title" aria-live="polite" hidden>
+                        <div class="results-topline">
+                            <div>
+                                <p class="section-kicker">LIVE SNAPSHOT</p>
+                                <h2 id="results-title">Your attendance</h2>
+                            </div>
+                            <span id="attendance-status" class="attendance-status"></span>
+                        </div>
+
+                        <div class="result-overview">
+                            <div class="progress-ring" role="meter" aria-label="Current attendance" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-meter">
+                                <svg viewBox="0 0 140 140" aria-hidden="true">
+                                    <defs>
+                                        <linearGradient id="attendance-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                                            <stop offset="0%" stop-color="#48e4f2"></stop>
+                                            <stop offset="55%" stop-color="#a578ff"></stop>
+                                            <stop offset="100%" stop-color="#ff69c7"></stop>
+                                        </linearGradient>
+                                    </defs>
+                                    <circle class="ring-track" cx="70" cy="70" r="58"></circle>
+                                    <circle class="ring-progress" cx="70" cy="70" r="58"></circle>
+                                </svg>
+                                <div class="ring-label">
+                                    <strong id="percentage-value">0%</strong>
+                                    <span>attendance</span>
+                                </div>
+                            </div>
+                            <p id="guidance" class="guidance"></p>
+                        </div>
+
+                        <section id="roast-card" class="roast-card" aria-live="polite" aria-label="Attendance reaction">
+                            <div class="roast-emoji" id="roast-emoji" aria-hidden="true"></div>
+                            <span id="roast-warning-icon" class="roast-warning-icon" aria-hidden="true" hidden>⚠</span>
+                            <div class="roast-copy">
+                                <p class="roast-kicker" id="roast-kicker"></p>
+                                <h3 id="roast-headline"></h3>
+                                <p class="roast-message" id="roast-message"></p>
+                                <button id="promise-button" class="promise-button" type="button" hidden>Sare ra, repati nunchi college ki veltha 😂</button>
+                                <p id="promise-confirmation" class="promise-confirmation" role="status" hidden></p>
+                            </div>
+                            <div class="confetti" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                        </section>
+
+                        <div class="metric-grid" aria-label="Attendance totals">
+                            <div class="metric-item">
+                                <span class="metric-icon metric-icon-blue" aria-hidden="true">&#9632;</span>
+                                <span class="metric-label">Conducted</span>
+                                <strong id="conducted-total">0</strong>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-icon metric-icon-pink" aria-hidden="true">&#9632;</span>
+                                <span class="metric-label">Attended</span>
+                                <strong id="attended-total">0</strong>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-icon metric-icon-violet" aria-hidden="true">&#9632;</span>
+                                <span class="metric-label">Missed</span>
+                                <strong id="missed-total">0</strong>
+                            </div>
+                        </div>
+
+                        <div id="action-card" class="action-card">
+                            <span id="action-icon" class="action-icon" aria-hidden="true"></span>
+                            <div>
+                                <p id="action-label" class="action-label"></p>
+                                <p id="action-message" class="action-message"></p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </section>
+
+            <section id="overview" class="overview-dashboard" aria-labelledby="overview-title">
+                <div class="dashboard-heading">
+                    <div>
+                        <p class="section-kicker">YOUR SEMESTER AT A GLANCE</p>
+                        <h2 id="overview-title">Visual dashboard</h2>
+                    </div>
+                    <span id="dashboard-source-note" class="source-note">Latest manual calculator entry</span>
+                </div>
+                <div id="dashboard-empty" class="dashboard-empty">
+                    <span class="empty-mark" aria-hidden="true">&#9678;</span>
+                    <div>
+                        <strong>No attendance snapshot yet</strong>
+                        <p>Enter your class totals in the calculator to populate this dashboard.</p>
+                    </div>
+                </div>
+                <div id="dashboard-content" class="dashboard-content" hidden>
+                    <div class="dashboard-metrics">
+                        <article class="dashboard-card dashboard-main-card">
+                            <div class="dashboard-card-top">
+                                <span>Overall attendance</span>
+                                <span id="dashboard-status" class="dashboard-status"></span>
+                            </div>
+                            <strong id="dashboard-percentage" class="dashboard-percentage">0%</strong>
+                            <div class="dashboard-progress-track" role="meter" aria-label="Overall attendance progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="dashboard-meter">
+                                <span id="dashboard-progress" class="dashboard-progress-fill"></span>
+                                <span class="target-marker" aria-hidden="true"></span>
+                            </div>
+                            <span class="dashboard-progress-label">75% target</span>
+                        </article>
+                        <article class="dashboard-card"><span>Conducted</span><strong id="dashboard-conducted">0</strong><small>classes</small></article>
+                        <article class="dashboard-card"><span>Attended</span><strong id="dashboard-attended">0</strong><small>classes</small></article>
+                        <article class="dashboard-card"><span>Missed</span><strong id="dashboard-missed">0</strong><small>classes</small></article>
+                        <article class="dashboard-card"><span>Safe to miss</span><strong id="dashboard-safe-skips">0</strong><small>consecutive classes</small></article>
+                        <article class="dashboard-card"><span>To reach target</span><strong id="dashboard-needed">0</strong><small>consecutive classes</small></article>
+                    </div>
+                    <div class="dashboard-subjects">
+                        <div class="dashboard-subject-heading">
+                            <h3>Subject progress</h3>
+                            <span id="improvement-count" class="source-note">No subjects need attention</span>
+                        </div>
+                        <div id="dashboard-subject-list" class="dashboard-subject-list"></div>
+                        <p id="dashboard-subject-empty" class="dashboard-subject-empty">Add subjects below to compare attendance and find areas to improve.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="quest" class="quest-panel" aria-labelledby="quest-title">
+                <div class="quest-heading">
+                    <div>
+                        <p class="section-kicker">YOUR ATTENDANCE, YOUR PROGRESSION</p>
+                        <h2 id="quest-title">Attendance Quest</h2>
+                        <p class="quest-intro">Earn progress from recorded attendance sessions. Planner previews and calculator refreshes never grant XP.</p>
+                    </div>
+                    <span class="quest-source-badge"><span aria-hidden="true">&#10022;</span> Record-powered</span>
+                </div>
+
+                <p id="quest-feedback" class="quest-feedback" role="status" aria-live="polite"></p>
+
+                <div class="quest-summary-grid">
+                    <article class="quest-level-card">
+                        <div class="quest-level-top">
+                            <span class="quest-level-emblem" aria-hidden="true">&#9733;</span>
+                            <div><span class="quest-label">CURRENT LEVEL</span><strong id="quest-level">Level 1</strong></div>
+                            <strong id="quest-xp" class="quest-total-xp">0 XP</strong>
+                        </div>
+                        <div class="quest-xp-track" role="progressbar" aria-label="Progress to next level" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="quest-xp-meter">
+                            <span id="quest-xp-progress"></span>
+                        </div>
+                        <div class="quest-xp-caption"><span id="quest-xp-current">0 XP</span><span id="quest-xp-next">100 XP to Level 2</span></div>
+                    </article>
+                    <article class="quest-stat-card">
+                        <span class="quest-stat-icon" aria-hidden="true">&#128293;</span>
+                        <span class="quest-label">CURRENT STREAK</span>
+                        <strong id="quest-current-streak">0</strong>
+                        <small>attended sessions</small>
+                    </article>
+                    <article class="quest-stat-card">
+                        <span class="quest-stat-icon best-streak-icon" aria-hidden="true">&#10024;</span>
+                        <span class="quest-label">BEST STREAK</span>
+                        <strong id="quest-best-streak">0</strong>
+                        <small>attended sessions</small>
+                    </article>
+                </div>
+
+                <div class="quest-content-grid">
+                    <section class="quest-subsection" aria-labelledby="weekly-quests-title">
+                        <div class="quest-section-heading">
+                            <div><p class="section-kicker">WEEK OF <span id="quest-week-label"></span></p><h3 id="weekly-quests-title">Weekly quests</h3></div>
+                            <span id="quest-week-xp" class="quest-week-reward">+0 XP</span>
+                        </div>
+                        <div id="quest-list" class="quest-list"></div>
+                        <p class="quest-method-note">Progress counts only sessions recorded in your attendance calendar. Weeks run Monday to Sunday in your local calendar.</p>
+                        <p class="quest-method-note streak-method-note">Streaks count attended sessions across logged dates. A missed session ends the run; mixed dates break it because within-day order is unknown. Unlogged dates are not counted as absences.</p>
+                        <div class="quest-week-confirm">
+                            <div><strong>Perfect Week verification</strong><p>Confirm that every class scheduled this week has been logged. Editing this week's calendar later will ask you to confirm again.</p></div>
+                            <button id="quest-confirm-week" class="secondary-button" type="button">Confirm week is fully logged</button>
+                        </div>
+                    </section>
+
+                    <section class="quest-subsection achievements-section" aria-labelledby="achievements-title">
+                        <div class="quest-section-heading">
+                            <div><p class="section-kicker">EARNED, NOT ASSUMED</p><h3 id="achievements-title">Achievements</h3></div>
+                            <span id="achievement-count" class="quest-week-reward">0 unlocked</span>
+                        </div>
+                        <div id="achievement-list" class="achievement-list"></div>
+                    </section>
+                </div>
+
+                <div class="quest-milestones">
+                    <div class="quest-section-heading">
+                        <div><p class="section-kicker">YOUR RECORD, YOUR MOMENTUM</p><h3>Recent milestones</h3></div>
+                        <span id="quest-record-summary" class="quest-summary-note">No calendar sessions recorded</span>
+                    </div>
+                    <div id="quest-milestone-list" class="quest-milestone-list"></div>
+                </div>
+                <p class="quest-storage-note">Quest progress is derived from calendar records and subject data stored in this browser. It is not cloud-synced. XP: +10 per attended session, +30 per completed weekly quest, +25 per unlocked achievement. Level thresholds: 0, 100, 250, then +200 XP per level.</p>
+            </section>
+
+            <div id="subjects" class="support-grid" aria-label="Subject tracker and attendance history">
+                <section class="support-panel subjects-panel" aria-labelledby="subjects-title">
+                    <div class="support-heading">
+                        <div>
+                            <p class="section-kicker">STAY ON TOP OF EVERY CLASS</p>
+                            <h2 id="subjects-title">Subject-wise attendance</h2>
+                        </div>
+                        <span id="subject-count" class="count-badge">0 subjects</span>
+                    </div>
+
+                    <form id="subject-form" class="subject-form">
+                        <div class="subject-field subject-name-field">
+                            <label for="subject-name">Subject name</label>
+                            <input id="subject-name" name="subjectName" type="text" maxlength="60" placeholder="e.g. Data Structures" required>
+                        </div>
+                        <div class="subject-field">
+                            <label for="subject-conducted">Classes conducted</label>
+                            <input id="subject-conducted" name="subjectConducted" type="number" min="0" step="1" inputmode="numeric" value="0" required>
+                        </div>
+                        <div class="subject-field">
+                            <label for="subject-attended">Classes attended</label>
+                            <input id="subject-attended" name="subjectAttended" type="number" min="0" step="1" inputmode="numeric" value="0" required>
+                        </div>
+                        <div class="subject-form-actions">
+                            <button id="subject-submit" class="small-primary-button" type="submit">Add subject</button>
+                            <button id="subject-cancel" class="text-button" type="button" hidden>Cancel edit</button>
+                        </div>
+                    </form>
+                    <p id="subject-feedback" class="inline-feedback" role="status"></p>
+                    <div id="subject-list" class="subject-list" aria-live="polite"></div>
+                </section>
+
+                <section class="support-panel history-panel" aria-labelledby="history-title">
+                    <div class="support-heading">
+                        <div>
+                            <p class="section-kicker">YOUR LAST FIVE CHECKS</p>
+                            <h2 id="history-title">Attendance history</h2>
+                        </div>
+                        <button id="clear-history" class="text-button clear-history-button" type="button">Clear history</button>
+                    </div>
+                    <p id="history-feedback" class="inline-feedback" role="status"></p>
+                    <ol id="history-list" class="history-list" aria-live="polite"></ol>
+                </section>
+            </div>
+
+            <section id="calendar" class="feature-panel calendar-panel" aria-labelledby="calendar-title">
+                <div class="feature-heading">
+                    <div>
+                        <p class="section-kicker">DATE-BY-DATE TRACKING</p>
+                        <h2 id="calendar-title">Attendance calendar</h2>
+                        <p class="feature-description">Calendar records are stored separately from your manual calculator totals.</p>
+                    </div>
+                    <div class="month-navigation">
+                        <button id="calendar-prev" class="icon-button" type="button" aria-label="Previous month" title="Previous month">&#8592;</button>
+                        <strong id="calendar-month-label"></strong>
+                        <button id="calendar-next" class="icon-button" type="button" aria-label="Next month" title="Next month">&#8594;</button>
+                    </div>
+                </div>
+                <div class="calendar-layout">
+                    <div class="calendar-column">
+                        <div class="calendar-weekdays" aria-hidden="true">
+                            <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                        </div>
+                        <div id="calendar-grid" class="calendar-grid" role="grid" aria-label="Attendance calendar dates"></div>
+                        <div class="calendar-legend" aria-label="Calendar legend">
+                            <span><i class="legend-attended"></i>Attended</span>
+                            <span><i class="legend-missed"></i>Missed</span>
+                            <span><i class="legend-mixed"></i>Mixed</span>
+                            <span><i class="legend-empty"></i>No record</span>
+                        </div>
+                    </div>
+                    <aside class="calendar-side">
+                        <div class="month-summary">
+                            <p class="section-kicker">MONTH SUMMARY</p>
+                            <strong id="calendar-month-percentage">No records</strong>
+                            <div class="month-stat-row"><span>Classes attended</span><b id="calendar-month-attended">0</b></div>
+                            <div class="month-stat-row"><span>Classes missed</span><b id="calendar-month-missed">0</b></div>
+                            <div class="month-stat-row"><span>Class days logged</span><b id="calendar-month-days">0</b></div>
+                        </div>
+                        <form id="calendar-record-form" class="calendar-record-form">
+                            <h3>Record selected date</h3>
+                            <p id="calendar-selected-label" class="selected-date-label"></p>
+                            <label for="calendar-attended">Classes attended</label>
+                            <input id="calendar-attended" type="number" min="0" step="1" inputmode="numeric" value="0" required>
+                            <label for="calendar-missed">Classes missed</label>
+                            <input id="calendar-missed" type="number" min="0" step="1" inputmode="numeric" value="0" required>
+                            <p id="calendar-feedback" class="inline-feedback" role="status"></p>
+                            <div class="calendar-form-actions">
+                                <button id="calendar-save" class="small-primary-button" type="submit">Save date</button>
+                                <button id="calendar-delete" class="text-button delete-button" type="button" disabled>Delete record</button>
+                            </div>
+                        </form>
+                    </aside>
+                </div>
+                <div class="calendar-import-row">
+                    <p>Importing calendar totals will replace the calculator fields and create a manual snapshot only after confirmation.</p>
+                    <button id="calendar-import" class="secondary-button" type="button">Use all calendar totals in calculator</button>
+                </div>
+            </section>
+
+            <section id="reports" class="feature-panel reports-panel" aria-labelledby="reports-title">
+                <div class="feature-heading">
+                    <div>
+                        <p class="section-kicker">READY TO SHARE</p>
+                        <h2 id="reports-title">Attendance reports</h2>
+                        <p class="feature-description">Exports use your latest calculator snapshot and saved subject records.</p>
+                    </div>
+                </div>
+                <div class="report-actions">
+                    <button id="download-csv" class="report-button" type="button"><span aria-hidden="true">&#8595;</span> Download CSV</button>
+                    <button id="download-pdf" class="report-button report-button-secondary" type="button"><span aria-hidden="true">&#8595;</span> Download PDF</button>
+                    <p id="report-feedback" class="inline-feedback" role="status"></p>
+                </div>
+            </section>
+
+            <section id="planner" class="feature-panel planner-panel" aria-labelledby="planner-title">
+                <div class="feature-heading">
+                    <div>
+                        <p class="section-kicker">PLAN BEFORE YOU BUNK</p>
+                        <h2 id="planner-title">Smart attendance planner</h2>
+                        <p class="feature-description">Preview scenarios from your latest manual calculator snapshot. Planner previews do not save or change attendance.</p>
+                    </div>
+                    <span id="planner-source-status" class="source-note">No calculator snapshot</span>
+                </div>
+                <form id="planner-form" class="planner-form">
+                    <div class="planner-fields">
+                        <div class="planner-field">
+                            <label for="planner-target">Attendance target (%)</label>
+                            <input id="planner-target" type="number" min="1" max="100" step="0.1" value="75" required>
+                        </div>
+                        <div class="planner-field">
+                            <label for="planner-attend">Upcoming classes to attend</label>
+                            <input id="planner-attend" type="number" min="0" step="1" value="0" required>
+                        </div>
+                        <div class="planner-field">
+                            <label for="planner-miss">Upcoming classes to miss</label>
+                            <input id="planner-miss" type="number" min="0" step="1" value="0" required>
+                        </div>
+                    </div>
+                    <div class="planner-actions">
+                        <button class="small-primary-button" type="submit">Preview plan</button>
+                        <button id="planner-apply" class="secondary-button" type="button" disabled>Apply preview to calculator</button>
+                    </div>
+                </form>
+                <p id="planner-feedback" class="inline-feedback" role="status"></p>
+                <div id="planner-results" class="planner-results" hidden>
+                    <div class="planner-current">
+                        <p class="section-kicker">CURRENT POSITION</p>
+                        <strong id="planner-current-status"></strong>
+                        <p id="planner-current-guidance"></p>
+                    </div>
+                    <div class="planner-preview">
+                        <p class="section-kicker">PROJECTED SCENARIO</p>
+                        <strong id="planner-projected-percentage"></strong>
+                        <p id="planner-projected-guidance"></p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <span>menoozzzz attendance prediction</span>
+            <span class="footer-divider" aria-hidden="true"></span>
+            <span>Built for your next class</span>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
