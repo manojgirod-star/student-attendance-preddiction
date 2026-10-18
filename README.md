@@ -15,7 +15,7 @@ A simple and interactive web application that helps students calculate their att
 - JavaScript
 
 ## Live Demo
-[Click here to use the website](https://menoozzzz-attendence.netlify.app)
+[Click here to use the website](https://menoozzzz-attendance.netlify.app)
 
 ## How to Run
 1. Download or clone this repository.
